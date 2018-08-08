@@ -1,0 +1,12 @@
+server:
+  port: 8086
+
+management:
+  security:
+    enabled: false
+
+spring:
+  application:
+    name: simple-crawler
+  profiles:
+    active: test
