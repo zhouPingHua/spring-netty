@@ -10,7 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * @author zph  on 2018/8/6
  */
-public class NettyHttpServer extends Thread {
+public class NettyHttpServer extends Thread{
 
     private final int port = 8888;
 
