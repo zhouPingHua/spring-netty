@@ -1,6 +1,5 @@
 package com.zph.netty.client;
 
-import com.zph.netty.core.MessageCallBack;
 import com.zph.netty.protocol.RpcRequest;
 import com.zph.netty.protocol.RpcResponse;
 import io.netty.buffer.Unpooled;

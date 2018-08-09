@@ -1,6 +1,5 @@
 package com.zph.netty.client;
 
-import com.zph.netty.core.MessageSendInitializeTask;
 import com.zph.netty.executor.RpcThreadPool;
 import com.zph.netty.serialize.RpcSerializeProtocol;
 import io.netty.channel.EventLoopGroup;

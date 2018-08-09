@@ -2,7 +2,7 @@ package com.zph.netty.client.proxy;
 
 import com.zph.netty.client.MessageSendHandler;
 import com.zph.netty.client.RpcServerLoader;
-import com.zph.netty.core.MessageCallBack;
+import com.zph.netty.client.MessageCallBack;
 import com.zph.netty.protocol.RpcRequest;
 
 import java.lang.reflect.InvocationHandler;

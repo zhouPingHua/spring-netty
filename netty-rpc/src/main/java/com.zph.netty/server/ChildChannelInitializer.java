@@ -1,6 +1,5 @@
 package com.zph.netty.server;
 
-import com.zph.netty.core.MessageSendChannelInitializer;
 import com.zph.netty.protocol.RpcDecoder;
 import com.zph.netty.protocol.RpcEncoder;
 import com.zph.netty.protocol.RpcRequest;

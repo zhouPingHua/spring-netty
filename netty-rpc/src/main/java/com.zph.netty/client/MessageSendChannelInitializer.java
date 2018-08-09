@@ -1,6 +1,5 @@
-package com.zph.netty.core;
+package com.zph.netty.client;
 
-import com.zph.netty.client.MessageSendHandler;
 import com.zph.netty.protocol.RpcDecoder;
 import com.zph.netty.protocol.RpcEncoder;
 import com.zph.netty.protocol.RpcRequest;
@@ -24,8 +23,7 @@ public class MessageSendChannelInitializer extends ChannelInitializer<SocketChan
         ChannelPipeline pipeline = socketChannel.pipeline();
         //ObjectDecoder的基类半包解码器LengthFieldBasedFrameDecoder的报文格式保持兼容。因为底层的父类LengthFieldBasedFrameDecoder
         //的初始化参数即为super(maxObjectSize, 0, 4, 0, 4);
-        pipeline.addLast(new LengthFieldBasedFrameDecoder(65536,0,4,0,0));
-//        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, MessageSendChannelInitializer.MESSAGE_LENGTH, 0, MessageSendChannelInitializer.MESSAGE_LENGTH));
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(65536,0,MessageSendChannelInitializer.MESSAGE_LENGTH,0,0));
         pipeline.addLast(new RpcEncoder(RpcRequest.class));
         pipeline.addLast(new RpcDecoder(RpcResponse.class));
         pipeline.addLast(new MessageSendHandler());

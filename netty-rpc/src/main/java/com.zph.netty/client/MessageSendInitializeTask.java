@@ -1,7 +1,5 @@
-package com.zph.netty.core;
+package com.zph.netty.client;
 
-import com.zph.netty.client.MessageSendHandler;
-import com.zph.netty.client.RpcServerLoader;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;

@@ -1,4 +1,4 @@
-package com.zph.netty.core;
+package com.zph.netty.client;
 
 import com.zph.netty.protocol.RpcRequest;
 import com.zph.netty.protocol.RpcResponse;
@@ -13,6 +13,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class MessageCallBack {
 
+    private final int calltimeOut = 10*1000;
+
     private RpcRequest request;
     private RpcResponse response;
     private Lock lock = new ReentrantLock();
@@ -25,8 +27,8 @@ public class MessageCallBack {
     public Object start() throws InterruptedException {
         try {
             lock.lock();
-            //设定一下超时时间，rpc服务器太久没有相应的话，就默认返回空吧。
-            finish.await(10*1000, TimeUnit.MILLISECONDS);
+            //设定一下超时时间，rpc服务器太久没有响应的话，就默认返回空吧。
+            finish.await(calltimeOut, TimeUnit.MILLISECONDS);
             if (this.response != null) {
                 return this.response.getResult();
             } else {
