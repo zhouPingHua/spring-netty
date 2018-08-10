@@ -15,9 +15,9 @@ public class MessageSendInitializeTask implements Runnable {
 
     private EventLoopGroup eventLoopGroup = null;
     private InetSocketAddress serverAddress = null;
-    private RpcServerLoader loader = null;
+    private RpcClient loader = null;
 
-    public MessageSendInitializeTask(EventLoopGroup eventLoopGroup, InetSocketAddress serverAddress, RpcServerLoader loader) {
+    public MessageSendInitializeTask(EventLoopGroup eventLoopGroup, InetSocketAddress serverAddress, RpcClient loader) {
         this.eventLoopGroup = eventLoopGroup;
         this.serverAddress = serverAddress;
         this.loader = loader;

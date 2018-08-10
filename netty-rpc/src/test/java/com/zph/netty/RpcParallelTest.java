@@ -26,7 +26,7 @@ public class RpcParallelTest {
     public static void main(String[] args) throws Exception {
         final MessageSendExecutor executor = new MessageSendExecutor("127.0.0.1:18866");
         //并行度10000   CountDownLatch保证并行
-        int parallel = 10000;
+        int parallel = 5;
 
         //开始计时
         StopWatch sw = new StopWatch();

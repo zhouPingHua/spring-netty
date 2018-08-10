@@ -9,7 +9,7 @@ import java.lang.reflect.Proxy;
  */
 public class MessageSendExecutor {
 
-    private RpcServerLoader loader = RpcServerLoader.getInstance();
+    private RpcClient loader = RpcClient.getInstance();
 
     public MessageSendExecutor(String serverAddress) {
         loader.load(serverAddress);

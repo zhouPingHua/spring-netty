@@ -14,9 +14,9 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author zph  on 2018/8/8
  */
-public class RpcServerLoader {
+public class RpcClient {
 
-    private volatile static RpcServerLoader rpcServerLoader;
+    private volatile static RpcClient rpcClient;
     private final static String DELIMITER = ":";
     private RpcSerializeProtocol serializeProtocol = RpcSerializeProtocol.JDKSERIALIZE;
 
@@ -31,23 +31,23 @@ public class RpcServerLoader {
     private Lock lock = new ReentrantLock();
     private Condition signal = lock.newCondition();
 
-    private RpcServerLoader() {
+    private RpcClient() {
     }
 
     //并发双重锁定
-    public static RpcServerLoader getInstance() {
-        if (rpcServerLoader == null) {
-            synchronized (RpcServerLoader.class) {
-                if (rpcServerLoader == null) {
-                    rpcServerLoader = new RpcServerLoader();
+    public static RpcClient getInstance() {
+        if (rpcClient == null) {
+            synchronized (RpcClient.class) {
+                if (rpcClient == null) {
+                    rpcClient = new RpcClient();
                 }
             }
         }
-        return rpcServerLoader;
+        return rpcClient;
     }
 
     public void load(String serverAddress) {
-        String[] ipAddr = serverAddress.split(RpcServerLoader.DELIMITER);
+        String[] ipAddr = serverAddress.split(RpcClient.DELIMITER);
         if (ipAddr.length == 2) {
             String host = ipAddr[0];
             int port = Integer.parseInt(ipAddr[1]);
