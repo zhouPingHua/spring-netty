@@ -1,8 +1,8 @@
 package com.zph.netty.client.proxy;
 
-import com.zph.netty.client.MessageSendHandler;
-import com.zph.netty.client.RpcClient;
+import com.zph.netty.client.ConnectManage;
 import com.zph.netty.client.MessageCallBack;
+import com.zph.netty.client.MessageSendHandler;
 import com.zph.netty.protocol.RpcRequest;
 
 import java.lang.reflect.InvocationHandler;
@@ -29,7 +29,7 @@ public class MessageSendProxy <T> implements InvocationHandler {
         request.setParameterTypes(method.getParameterTypes());
         request.setParameters(args);
 
-        MessageSendHandler handler = RpcClient.getInstance().getMessageSendHandler();
+        MessageSendHandler handler = ConnectManage.getInstance().chooseHandler();
         MessageCallBack callBack = handler.sendRequest(request);
         return callBack.start();
     }

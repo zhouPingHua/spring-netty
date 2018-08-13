@@ -22,7 +22,7 @@ public class NettyServer extends Thread{
     Logger LOGGER = LoggerFactory.getLogger(NettyServer.class);
 
     private String serverAddress;
-    private String serviceRegistry;
+    private ServiceRegistry serviceRegistry;
     private Map<String, Object> handlerMap = new ConcurrentHashMap<>();
 
     EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -30,7 +30,7 @@ public class NettyServer extends Thread{
 
     public NettyServer(String serverAddress, String serviceRegistry, Map<String, Object> handlerMap){
         this.serverAddress = serverAddress;
-        this.serviceRegistry = serviceRegistry;
+        this.serviceRegistry = new ServiceRegistry(serviceRegistry);
         this.handlerMap = handlerMap;
     }
 
@@ -47,6 +47,9 @@ public class NettyServer extends Thread{
             int port = Integer.parseInt(array[1]);
 
             ChannelFuture future = bootstrap.bind(host, port).sync();
+            if (serviceRegistry != null) {
+                serviceRegistry.register(serverAddress);
+            }
             future.channel().closeFuture().sync();
             LOGGER.debug("Server started on port {}", port);
         } catch (InterruptedException e) {

@@ -33,7 +33,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        new Thread(new NettyServer(serverAddress,serviceRegistry,handlerMap)).start();
+        new NettyServer(serverAddress,serviceRegistry,handlerMap).start();
     }
 
     @Override

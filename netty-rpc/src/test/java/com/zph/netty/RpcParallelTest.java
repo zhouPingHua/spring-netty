@@ -1,6 +1,7 @@
 package com.zph.netty;
 
-import com.zph.netty.client.MessageSendExecutor;
+import com.zph.netty.client.RpcClient;
+import com.zph.netty.registry.ServiceDiscovery;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.concurrent.CountDownLatch;
@@ -24,9 +25,10 @@ public class RpcParallelTest {
     * */
 
     public static void main(String[] args) throws Exception {
-        final MessageSendExecutor executor = new MessageSendExecutor("127.0.0.1:18866");
+        ServiceDiscovery serviceDiscovery = new ServiceDiscovery("118.24.62.144:2181");
+        final RpcClient executor = new RpcClient(serviceDiscovery);
         //并行度10000   CountDownLatch保证并行
-        int parallel = 5;
+        int parallel = 10000;
 
         //开始计时
         StopWatch sw = new StopWatch();

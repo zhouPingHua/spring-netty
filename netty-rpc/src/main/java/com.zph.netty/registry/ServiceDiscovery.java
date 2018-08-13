@@ -1,5 +1,6 @@
 package com.zph.netty.registry;
 
+import com.zph.netty.client.ConnectManage;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -71,11 +72,15 @@ public class ServiceDiscovery {
             }
             LOGGER.debug("node data: {}", dataList);
             this.dataList = dataList;
-
+            UpdateConnectedServer();
             LOGGER.debug("Service discovery triggered updating connected server node.");
         } catch (KeeperException | InterruptedException e) {
-            LOGGER.error("", e);
+            LOGGER.info("", e);
         }
+    }
+
+    private void UpdateConnectedServer(){
+        ConnectManage.getInstance().updateConnectedServer(this.dataList);
     }
 
 

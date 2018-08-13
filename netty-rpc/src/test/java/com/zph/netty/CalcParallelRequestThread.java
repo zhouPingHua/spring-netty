@@ -1,6 +1,6 @@
 package com.zph.netty;
 
-import com.zph.netty.client.MessageSendExecutor;
+import com.zph.netty.client.RpcClient;
 import com.zph.netty.servicebean.Calculate;
 
 import java.util.concurrent.CountDownLatch;
@@ -14,10 +14,10 @@ public class CalcParallelRequestThread implements Runnable {
 
     private CountDownLatch signal;
     private CountDownLatch finish;
-    private MessageSendExecutor executor;
+    private RpcClient executor;
     private int taskNumber = 0;
 
-    public CalcParallelRequestThread(MessageSendExecutor executor, CountDownLatch signal, CountDownLatch finish, int taskNumber) {
+    public CalcParallelRequestThread(RpcClient executor, CountDownLatch signal, CountDownLatch finish, int taskNumber) {
         this.signal = signal;
         this.finish = finish;
         this.taskNumber = taskNumber;

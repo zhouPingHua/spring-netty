@@ -1,93 +1,37 @@
 package com.zph.netty.client;
 
-import com.zph.netty.executor.RpcThreadPool;
-import com.zph.netty.serialize.RpcSerializeProtocol;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import java.net.InetSocketAddress;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import com.zph.netty.client.proxy.MessageSendProxy;
+import com.zph.netty.registry.ServiceDiscovery;
 
+import java.lang.reflect.Proxy;
 
 /**
- * @author zph  on 2018/8/8
+ * @author zph  on 2018/8/9
  */
 public class RpcClient {
 
-    private volatile static RpcClient rpcClient;
-    private final static String DELIMITER = ":";
-    private RpcSerializeProtocol serializeProtocol = RpcSerializeProtocol.JDKSERIALIZE;
+    private String serverAddress;
+    private ServiceDiscovery serviceDiscovery;
 
-    //方法返回到Java虚拟机的可用的处理器数量
-    private final static int parallel = Runtime.getRuntime().availableProcessors() * 2;
-    //netty nio线程池
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
-    private static ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) RpcThreadPool.getExecutor(16, -1);
-    private MessageSendHandler messageSendHandler = null;
-
-    //等待Netty服务端链路建立通知信号
-    private Lock lock = new ReentrantLock();
-    private Condition signal = lock.newCondition();
-
-    private RpcClient() {
+    public RpcClient(String serverAddress) {
+        this.serverAddress = serverAddress;
     }
 
-    //并发双重锁定
-    public static RpcClient getInstance() {
-        if (rpcClient == null) {
-            synchronized (RpcClient.class) {
-                if (rpcClient == null) {
-                    rpcClient = new RpcClient();
-                }
-            }
-        }
-        return rpcClient;
+    public RpcClient(ServiceDiscovery serviceDiscovery) {
+        this.serviceDiscovery = serviceDiscovery;
     }
 
-    public void load(String serverAddress) {
-        String[] ipAddr = serverAddress.split(RpcClient.DELIMITER);
-        if (ipAddr.length == 2) {
-            String host = ipAddr[0];
-            int port = Integer.parseInt(ipAddr[1]);
-            final InetSocketAddress remoteAddr = new InetSocketAddress(host, port);
-
-            threadPoolExecutor.submit(new MessageSendInitializeTask(eventLoopGroup, remoteAddr, this));
-        }
+    public static <T> T execute(Class<T> rpcInterface) {
+        return (T) Proxy.newProxyInstance(
+                rpcInterface.getClassLoader(),
+                new Class<?>[]{rpcInterface},
+                new MessageSendProxy<T>(rpcInterface)
+        );
     }
 
-    public void setMessageSendHandler(MessageSendHandler messageInHandler) {
-        try {
-            lock.lock();
-            this.messageSendHandler = messageInHandler;
-            //唤醒所有等待客户端RPC线程
-            signal.signalAll();
-        } finally {
-            lock.unlock();
-        }
+    public void stop() {
+        serviceDiscovery.stop();
+        ConnectManage.getInstance().stop();
     }
 
-    public MessageSendHandler getMessageSendHandler() throws InterruptedException {
-        try {
-            lock.lock();
-            //Netty服务端链路没有建立完毕之前，先挂起等待
-            if (messageSendHandler == null) {
-                signal.await();
-            }
-            return messageSendHandler;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    public void unLoad() {
-        messageSendHandler.close();
-        threadPoolExecutor.shutdown();
-        eventLoopGroup.shutdownGracefully();
-    }
-
-    public void setSerializeProtocol(RpcSerializeProtocol serializeProtocol) {
-        this.serializeProtocol = serializeProtocol;
-    }
 }
