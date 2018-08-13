@@ -66,7 +66,7 @@ public class SpringProcessorRegister extends AbstractProcessorRegister implement
     }
 
     private void NettyStart() {
-        new Thread(new NettyHttpServer()).start();
+        new NettyHttpServer().start();
     }
 
     private void initRoute() {
