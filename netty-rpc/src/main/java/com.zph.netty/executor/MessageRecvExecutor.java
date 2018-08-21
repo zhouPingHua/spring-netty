@@ -15,7 +15,7 @@ public class MessageRecvExecutor {
 
     public static void submit(Runnable task){
         if(threadPoolExecutor == null){
-            synchronized (RpcServer.class) {
+            synchronized (MessageRecvExecutor.class) {
                 if(threadPoolExecutor == null){
                     threadPoolExecutor = new ThreadPoolExecutor(16, 16, 600L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(65536));
                 }

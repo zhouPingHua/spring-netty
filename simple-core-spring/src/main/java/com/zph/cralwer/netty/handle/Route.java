@@ -34,7 +34,7 @@ public class Route {
             log.error("controller层方法调用错误");
             e.printStackTrace();
         }
-        System.out.println("远程调用耗时:"+(System.currentTimeMillis() - start));
+        log.info("远程调用耗时:"+(System.currentTimeMillis() - start));
         return "";
     }
 }

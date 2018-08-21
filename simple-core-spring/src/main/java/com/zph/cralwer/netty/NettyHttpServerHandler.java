@@ -22,10 +22,8 @@ public class NettyHttpServerHandler extends ChannelInboundHandlerAdapter {
 
 
     private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest request) throws IOException {
-        //得到返回结果
-        String result = getResult(request);
         //返回客户端消息
-        writeResponse(result, ctx);
+        writeResponse(getResult(request), ctx);
     }
 
     /**
