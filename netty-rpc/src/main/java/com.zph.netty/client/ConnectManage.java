@@ -33,8 +33,6 @@ public class ConnectManage {
     private static ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) RpcThreadPool.getExecutor(16, -1);
 
     private volatile static ConnectManage connectManage;
-    //netty nio线程池
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
     //等待Netty服务端链路建立通知信号
     private Lock lock = new ReentrantLock();
     private Condition signal = lock.newCondition();
@@ -48,6 +46,8 @@ public class ConnectManage {
     private CopyOnWriteArrayList<MessageSendHandler> connectedHandlers = new CopyOnWriteArrayList<>();
     private Map<InetSocketAddress, MessageSendHandler> connectedServerNodes = new ConcurrentHashMap<>();
 
+    //netty nio线程池
+    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
 
     private ConnectManage() {
     }
