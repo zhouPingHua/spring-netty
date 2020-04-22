@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.zph.crawler</groupId>
-    <artifactId>dance-crawler</artifactId>
+    <artifactId>spring-netty-pom</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <description>netty各种应用</description>
